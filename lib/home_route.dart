@@ -1,5 +1,6 @@
 import 'package:awesome_drawing_quiz/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 // TODO: Import google_mobile_ads.dart
 
@@ -65,6 +66,6 @@ class HomeRoute extends StatelessWidget {
   // TODO: Change return type to Future<InitializationStatus>
   Future<void> _initGoogleMobileAds() {
     // TODO: Initialize Google Mobile Ads SDK
-    return Future.value({});
+    return MobileAds.instance.initialize();
   }
 }
