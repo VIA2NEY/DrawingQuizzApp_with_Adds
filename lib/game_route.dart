@@ -17,7 +17,8 @@ class _GameRouteState extends State<GameRoute> implements QuizEventListener {
   // TODO: Add _bannerAd
   BannerAd? _bannerAd;
 
-  // TODO: Add _interstitialAd
+  // Add _interstitialAd
+  InterstitialAd? _interstitialAd;
 
   // TODO: Add _rewardedAd
 
@@ -188,7 +189,29 @@ class _GameRouteState extends State<GameRoute> implements QuizEventListener {
     );
   }
 
-  // TODO: Implement _loadInterstitialAd()
+  // Implement _loadInterstitialAd()
+    void _loadInterstitialAd() {
+      InterstitialAd.load(
+        adUnitId: AdHelper.interstitialAdUnitId,
+        request: AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (ad) {
+            ad.fullScreenContentCallback = FullScreenContentCallback(
+              onAdDismissedFullScreenContent: (ad) {
+                _moveToHome();
+              },
+            );
+
+            setState(() {
+              _interstitialAd = ad;
+            });
+          },
+          onAdFailedToLoad: (err) {
+            print('Failed to load an interstitial ad: ${err.message}');
+          },
+        ),
+      );
+    }
 
   // TODO: Implement _loadRewardedAd()
 
@@ -197,7 +220,8 @@ class _GameRouteState extends State<GameRoute> implements QuizEventListener {
     // Dispose a BannerAd object
     _bannerAd?.dispose();
 
-    // TODO: Dispose an InterstitialAd object
+    // Dispose an InterstitialAd object
+    _interstitialAd?.dispose();
 
     // TODO: Dispose a RewardedAd object
 
@@ -215,7 +239,11 @@ class _GameRouteState extends State<GameRoute> implements QuizEventListener {
   void onNewLevel(int level, Drawing drawing, String clue) {
     setState(() {});
 
-    // TODO: Load an Interstitial Ad
+    // Load an Interstitial Ad
+    if (level >= 3 && _interstitialAd == null) {
+      _loadInterstitialAd();
+    }
+
   }
 
   @override
@@ -236,7 +264,11 @@ class _GameRouteState extends State<GameRoute> implements QuizEventListener {
               child: Text('close'.toUpperCase()),
               onPressed: () {
                 // TODO: Display an Interstitial Ad
-
+                if (_interstitialAd != null) {
+                  _interstitialAd?.show();
+                } else {
+                  _moveToHome();
+                }
                 _moveToHome();
               },
             ),
