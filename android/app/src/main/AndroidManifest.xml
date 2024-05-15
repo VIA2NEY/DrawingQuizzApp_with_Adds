@@ -3,6 +3,11 @@
         android:label="awesome_drawing_quiz"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-2555669738207003~9050713021"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
